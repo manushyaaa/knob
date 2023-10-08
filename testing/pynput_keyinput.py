@@ -24,12 +24,23 @@
 #     get_pressed_key()
 
 
-import pyautogui
-#pyautogui.press('volumeup')
-#pyautogui.press('fn')
+# import pyautogui
+# #pyautogui.press('volumeup')
+# #pyautogui.press('fn')
  
 
-# Press the F7 key while holding down the Fn key
-pyautogui.hotkey('fn', 'up')
+# # Press the F7 key while holding down the Fn key
+# pyautogui.hotkey('fn', 'up')
 
-#print(pyautogui.KEYBOARD_KEYS)
+# #print(pyautogui.KEYBOARD_KEYS)
+
+import keyboard
+
+def get_key_scancode():
+    print("Press a key to get its scancode...")
+    event = keyboard.read_event()
+    if event.event_type == keyboard.KEY_DOWN:
+        print(f"Key: {event.name}, Scancode: {event.scan_code}")
+
+if __name__ == "__main__":
+    get_key_scancode()

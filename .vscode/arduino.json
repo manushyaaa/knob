@@ -1,7 +1,0 @@
-{
-    "configuration": "cpu=atmega328",
-    "board": "arduino:avr:nano",
-    "programmer": "avrisp",
-    "sketch": "arduino_serial_testing.ino",
-    "port": "COM256"
-}

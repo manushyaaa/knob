@@ -24,22 +24,31 @@
 
 import serial.tools.list_ports
 
-def check_for_ch340_device():
-    ports = serial.tools.list_ports.comports()
+# def check_for_ch340_device():
+#     ports = serial.tools.list_ports.comports()
     
-    for port in ports:
-        if "CH340" in port.description:
-            return True
+#     for port in ports:
+#         if "CH340" in port.description:
+#             return True
 
-    return False
+#     return False
 
-if __name__ == "__main__":
-    while True:
-        if check_for_ch340_device():
-            print("USB-SERIAL CH340 device plugged in.")
-        else:
-            print("USB-SERIAL CH340 device not found.")
+# if __name__ == "__main__":
+#     while True:
+#         if check_for_ch340_device():
+#             print("USB-SERIAL CH340 device plugged in.")
+#         else:
+#             print("USB-SERIAL CH340 device not found.")
         
-        # You can adjust the polling interval as needed
-        import time
-        time.sleep(1)
+#         # You can adjust the polling interval as needed
+#         import time
+#         time.sleep(1)
+
+for port in serial.tools.list_ports.comports():
+    print(port.device)
+    print(port.desc)
+    print(port.hwid)
+    print(port.vid)
+    print(port.pid)
+    print(port.name)
+ 
