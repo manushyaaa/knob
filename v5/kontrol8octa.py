@@ -17,7 +17,7 @@ client_secret = '0d9d08d329e54bc19abc36751534b8f8'
 sp = spotipy.Spotify(auth_manager=spotipy.SpotifyOAuth(client_id=client_id,
                                                        client_secret=client_secret, 
                                                        redirect_uri='http://localhost:8888/callback',
-                                                       scope='user-modify-playback-state'))
+                                                       scope='user-modify-playback-state user-read-playback-state'))
  
 try:
     brightness = sbc.get_brightness()
@@ -57,7 +57,7 @@ def main():
     global WLED_CNTR
     global SPOTIFY_VOLUME
     global port 
-
+  
     while True:
         # Wait for COM256 to become available
         while not get_com_port():
@@ -94,7 +94,7 @@ def main():
                         pass
  
                 elif command == "MusicSeekUp":
-                    SPOTIFY_VOLUME += 10
+                    SPOTIFY_VOLUME += 5
                     if SPOTIFY_VOLUME  < 0:
                         SPOTIFY_VOLUME  = 0
                     if SPOTIFY_VOLUME > 100:
@@ -102,10 +102,11 @@ def main():
                     try : 
                         sp.volume(SPOTIFY_VOLUME)                      
                     except Exception as e : 
-                        pass
+                        print(e)
+                       
                 
                 elif command == "MusicSeekDown":
-                    SPOTIFY_VOLUME -= 10
+                    SPOTIFY_VOLUME -= 5
                     if SPOTIFY_VOLUME  < 0:
                         SPOTIFY_VOLUME  = 0
                     if SPOTIFY_VOLUME > 100:
@@ -113,7 +114,7 @@ def main():
                     try : 
                         sp.volume(SPOTIFY_VOLUME)
                     except Exception as e : 
-                        pass
+                        print(e)
      
                 elif command == "LightUp":
                     WLED_CNTR += 10
@@ -141,8 +142,23 @@ def main():
 
 
                 elif command == "PlayPause":
-                    keyboard.press(Key.media_play_pause)
-                    keyboard.release(Key.media_play_pause)
+                    try:
+                        current_track = sp.current_playback()
+                        
+                        if current_track is not None:
+                            playback_state = current_track['is_playing']
+                            if playback_state:
+                                sp.pause_playback()
+                                print("Playback paused.")
+                            else:
+                                sp.start_playback()
+                                print("Playback started.")
+                        else:
+                            print("No track is currently playing.")
+                    except Exception as e:
+                        print(f"Spotify API Error: {e}")
+                    # keyboard.press(Key.media_play_pause)
+                    # keyboard.release(Key.media_play_pause)
 
                 elif command == "Mute":
                     keyboard.press(Key.media_volume_mute)
@@ -165,12 +181,18 @@ def main():
                     pass
 
                 elif command == "Previous": 
-
                     try : 
                         sp.previous_track()
                    
                     except Exception as e : 
-                        pass               
+                        pass        
+                
+                elif command == "Next": 
+                    try : 
+                        sp.next_track()
+                   
+                    except Exception as e : 
+                        pass                
                 
 
 

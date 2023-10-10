@@ -5,6 +5,9 @@
 #define encoderSW 3  // SW pin of the rotary encoder#include <Arduino.h>
 
 const int buttonPin = 7;  // The digital pin where the button is connected
+const int leftbuttonPin = 8;  // The digital pin where the button is connected
+const int rightbuttonPin = 10;
+
 const int redPin = 9;     // Use a different PWM pin
 const int greenPin = 6;   // Use a different PWM pin
 const int bluePin = 5;    // Use a different PWM pin
@@ -16,15 +19,25 @@ boolean rotating = false;
 
 int buttonState = HIGH;      // The initial state of the button (assume not pressed)
 int lastButtonState = HIGH;  // The previous state of the button
+
+int leftbuttonState = HIGH;      // The initial state of the button (assume not pressed)
+int leftlastButtonState = HIGH;  // The previous state of the button
+
+int rightbuttonState = HIGH;      // The initial state of the button (assume not pressed)
+int rightlastButtonState = HIGH;  // The previous state of the button
+
 int counter = 0;             // Counter to keep track of the value
 
 void setup() {
+  
   pinMode(CLK, INPUT);
   pinMode(CLK, INPUT_PULLUP);
   pinMode(DATA, INPUT);
   pinMode(DATA, INPUT_PULLUP);
 
   pinMode(buttonPin, INPUT_PULLUP);  // Enable internal pull-up resistor
+  pinMode(leftbuttonPin, INPUT_PULLUP); 
+  pinMode(rightbuttonPin, INPUT_PULLUP); 
 
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
@@ -39,9 +52,49 @@ void primaryColors(int redValue, int greenValue, int blueValue) {
   digitalWrite(bluePin, blueValue);
 }
 void loop() {
-
+ 
   static int8_t c, val;
   buttonState = digitalRead(buttonPin);
+  leftbuttonState = digitalRead(leftbuttonPin);
+  rightbuttonState = digitalRead(rightbuttonPin);
+ 
+
+  if (leftbuttonState == LOW && leftlastButtonState == HIGH) {    
+    switch (counter) {
+      case 1:  
+        Serial.println("MediaChange");       
+        break;
+      case 2:   
+        Serial.println("Shutdown"); 
+        break;
+      case 3:   
+        Serial.println("Previous");
+        break;
+      case 4:   
+        Serial.println("ChangeMode"); 
+        break;
+      default:
+        break;
+    }
+  }
+  if (rightbuttonState == LOW && rightlastButtonState == HIGH) {    
+    switch (counter) {
+      case 1:  
+        Serial.println("MediaChangeR");       
+        break;
+      case 2:   
+        Serial.println("ShutdownR"); 
+        break;
+      case 3:   
+        Serial.println("Next");
+        break;
+      case 4:   
+        Serial.println("ChangeModeR"); 
+        break;
+      default:
+        break;
+    }
+  }
 
   if (val = read_rotary()) {
     prev_c = c;
@@ -56,7 +109,10 @@ void loop() {
           Serial.println("BrightnessUp");
           break;
         case 3:
-          Serial.println("SEEKUp");
+          Serial.println("MusicSeekUp");
+          break;
+        case 4:
+          Serial.println("LightUp");
           break;
         default:
           // Handle other cases here
@@ -75,7 +131,10 @@ void loop() {
           Serial.println("BrightnessDown");
           break;
         case 3:
-          Serial.println("SEEKDown");
+          Serial.println("MusicSeekDown");
+          break;
+       case 4:
+          Serial.println("LightDown");
           break;
         default:
           // Handle other cases here
@@ -84,6 +143,7 @@ void loop() {
       // Serial.println("backward");
     }
   }
+
   if (digitalRead(encoderSW) == LOW) {
     if (!rotating) {
       switch (counter) {
@@ -96,20 +156,25 @@ void loop() {
         case 3:
           Serial.println("PlayPause");
           break;
+        case 4:
+          Serial.println("Power");
+          break;
+        
         default:
           // Handle other cases here
           break;
       }
-
       rotating = true;
     }
   } else {
     rotating = false;
   }
+
+
   if (buttonState == LOW && lastButtonState == HIGH) {
     counter++;
 
-    if (counter > 3) {
+    if (counter > 4) {
       counter = 1;
     }
 
@@ -126,14 +191,20 @@ void loop() {
         Serial.println("Counter 3 action");
         primaryColors(0, 0, 1);
         break;
+      case 4:  // Action for Video Seek Control ?? YELLOW
+        Serial.println("Counter 4 action");
+        primaryColors(0, 1, 1);
+        break;
       default:
         break;
     }
   }
-
   // Update the last button state
   lastButtonState = buttonState;
+  leftlastButtonState = leftbuttonState;
+  rightlastButtonState = rightbuttonState;
 }
+ 
 
 // A vald CW or  CCW move returns 1, invalid returns 0.
 int8_t read_rotary() {

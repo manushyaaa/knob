@@ -1,0 +1,9 @@
+{
+  "brightness": 50,
+  "wled_brightness": 150,
+  "spotify_volume": 30,
+  "serial_vid": 6790,
+  "serial_pid": 29987,
+  "spotify_client_id": "ad7d4f3724b6446ebd37af580ca3273e",
+  "spotify_client_secret": "0d9d08d329e54bc19abc36751534b8f8"
+}

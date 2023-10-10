@@ -2,3 +2,4 @@ pyserial
 pynput
 screen_brightness_control
 win10toast
+spotipy

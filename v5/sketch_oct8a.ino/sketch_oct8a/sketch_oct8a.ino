@@ -1,16 +1,14 @@
 #include <Arduino.h>
 
-#define CLK 2        // CLK pin of the rotary encoder
-#define DATA 4       // DT pin of the rotary encoder
-#define encoderSW 3  // SW pin of the rotary encoder#include <Arduino.h>
+#define CLK 5        // CLK pin of the rotary encoder
+#define DATA 6       // DT pin of the rotary encoder
+#define encoderSW 7  // SW pin of the rotary encoder#include <Arduino.h>
 
-const int buttonPin = 7;  // The digital pin where the button is connected
-const int leftbuttonPin = 8;  // The digital pin where the button is connected
+const int buttonPin = 2;  // The digital pin where the button is connected
+const int leftbuttonPin = 3;  // The digital pin where the button is connected
+const int rightbuttonPin = 4;
 
-
-const int redPin = 9;     // Use a different PWM pin
-const int greenPin = 6;   // Use a different PWM pin
-const int bluePin = 5;    // Use a different PWM pin
+ 
 
 int prev_c = 0;
 static uint8_t prevNextCode = 0;
@@ -19,8 +17,12 @@ boolean rotating = false;
 
 int buttonState = HIGH;      // The initial state of the button (assume not pressed)
 int lastButtonState = HIGH;  // The previous state of the button
+
 int leftbuttonState = HIGH;      // The initial state of the button (assume not pressed)
 int leftlastButtonState = HIGH;  // The previous state of the button
+
+int rightbuttonState = HIGH;      // The initial state of the button (assume not pressed)
+int rightlastButtonState = HIGH;  // The previous state of the button
 
 int counter = 0;             // Counter to keep track of the value
 
@@ -33,28 +35,23 @@ void setup() {
 
   pinMode(buttonPin, INPUT_PULLUP);  // Enable internal pull-up resistor
   pinMode(leftbuttonPin, INPUT_PULLUP); 
+  pinMode(rightbuttonPin, INPUT_PULLUP); 
 
-  pinMode(redPin, OUTPUT);
-  pinMode(greenPin, OUTPUT);
-  pinMode(bluePin, OUTPUT);
+ 
 
   Serial.begin(115200);
   // Serial.println("KY-040 Start:");
 }
-void primaryColors(int redValue, int greenValue, int blueValue) {
-  digitalWrite(redPin, redValue);
-  digitalWrite(greenPin, greenValue);
-  digitalWrite(bluePin, blueValue);
-}
+ 
 void loop() {
  
   static int8_t c, val;
   buttonState = digitalRead(buttonPin);
   leftbuttonState = digitalRead(leftbuttonPin);
+  rightbuttonState = digitalRead(rightbuttonPin);
  
 
-  if (leftbuttonState == LOW && leftlastButtonState == HIGH) {
-    
+  if (leftbuttonState == LOW && leftlastButtonState == HIGH) {    
     switch (counter) {
       case 1:  
         Serial.println("MediaChange");       
@@ -67,6 +64,24 @@ void loop() {
         break;
       case 4:   
         Serial.println("ChangeMode"); 
+        break;
+      default:
+        break;
+    }
+  }
+  if (rightbuttonState == LOW && rightlastButtonState == HIGH) {    
+    switch (counter) {
+      case 1:  
+        Serial.println("MediaChangeR");       
+        break;
+      case 2:   
+        Serial.println("ShutdownR"); 
+        break;
+      case 3:   
+        Serial.println("Next");
+        break;
+      case 4:   
+        Serial.println("ChangeModeR"); 
         break;
       default:
         break;
@@ -158,19 +173,19 @@ void loop() {
     switch (counter) {
       case 1:  // Action for Volume Control ?? BLUE
         Serial.println("Counter 1 action");
-        primaryColors(1, 0, 0);
+     
         break;
       case 2:  // Action for Brightness Control ?? MAG
         Serial.println("Counter 2 action");
-        primaryColors(0, 1, 0);
+      
         break;
       case 3:  // Action for Video Seek Control ?? YELLOW
         Serial.println("Counter 3 action");
-        primaryColors(0, 0, 1);
+       
         break;
       case 4:  // Action for Video Seek Control ?? YELLOW
         Serial.println("Counter 4 action");
-        primaryColors(0, 1, 1);
+        
         break;
       default:
         break;
@@ -179,7 +194,9 @@ void loop() {
   // Update the last button state
   lastButtonState = buttonState;
   leftlastButtonState = leftbuttonState;
+  rightlastButtonState = rightbuttonState;
 }
+ 
 
 // A vald CW or  CCW move returns 1, invalid returns 0.
 int8_t read_rotary() {

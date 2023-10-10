@@ -1,10 +1,10 @@
 #include <Arduino.h>
 
-#define encoderCLK 2  // CLK pin of the rotary encoder
-#define encoderDT 4   // DT pin of the rotary encoder
-#define encoderSW 3   // SW pin of the rotary encoder
+#define encoderCLK 11  // CLK pin of the rotary encoder
+#define encoderDT 9   // DT pin of the rotary encoder
+#define encoderSW 8   // SW pin of the rotary encoder
 
-const int buttonPin = 7;  // The digital pin where the button is connected
+const int buttonPin = 5;  // The digital pin where the button is connected
 const int redPin = 9;     // Use a different PWM pin
 const int greenPin = 6;   // Use a different PWM pin
 const int bluePin = 5;    // Use a different PWM pin
