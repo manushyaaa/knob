@@ -1,20 +1,37 @@
-# import requests
+import requests
+import time
 
-# url = "http://192.168.1.69/win&A=255"
+# Define the WLED device IP address
+wled_ip = "192.168.1.69"
 
-# try:
-#     response = requests.get(url)
-#     if response.status_code == 200:
-#         print("Request successful")
-#     else:
-#         print(f"Request failed with status code: {response.status_code}")
-# except requests.exceptions.RequestException as e:
-#     print(f"Request error: {e}")
-# import win10toast 
-from win10toast import ToastNotifier
+# List of colors to cycle through (RGB format)
+colors = [
+    [255, 0, 0],  # Red
+    [0, 255, 0],  # Green
+    [0, 0, 255],  # Blue
+]
 
-# Create a ToastNotifier object
-toaster = ToastNotifier()
+# Delay between color changes (in seconds)
+delay = 5  # Change color every 5 seconds
 
-# Display a simple toast notification
-toaster.show_toast("Notification Title", "This is the notification message.", duration=10)
+while True:
+    for color in colors:
+        # Construct the JSON payload with the current color
+        color_payload = {
+            "seg": [
+                {
+                    "col": [color]
+                }
+            ]
+        }
+
+        # Send an HTTP POST request to change the color
+        url = f"http://{wled_ip}/json/state"
+        response = requests.post(url, json=color_payload)
+
+        if response.status_code == 200:
+            print(f"Color changed to {color} successfully!")
+        else:
+            print(f"Failed to change color. Status code: {response.status_code}")
+
+        time.sleep(delay)

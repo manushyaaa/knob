@@ -1,3 +1,10 @@
+"""
+VERSION 1.9 
+    - Added a new command to change the mode of the WLED strip
+    - Added Time , Date and Day of the week to the OLED display
+  
+"""
+
 import os
 import requests
 import serial.tools.list_ports

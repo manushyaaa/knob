@@ -2,6 +2,8 @@ import serial
 import serial.tools.list_ports
 import json
 from pynput.keyboard import Key, Controller
+from datetime import datetime
+
 
 keyboard = Controller()
 
@@ -61,6 +63,13 @@ if __name__ == "__main__":
                     volume_down()
                 elif command == "Mute":
                     mute()
+                elif command == "GetTime":
+                    
+                    now = datetime.now()
+                    current_time = now.strftime("%H:%M:%S")
+                    # Send the current time over serial port
+                    #print("Sending time:", current_time)
+                    ser.write((str(current_time)+'\n').encode())
 
        
         

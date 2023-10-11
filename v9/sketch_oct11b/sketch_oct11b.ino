@@ -1,7 +1,8 @@
 /*
- 10/10/2023 - V1.6 with OLED Screen
+ 10/10/2023 - V1.9 with OLED Screen
  - added Enchanced Rot 
  - added cues
+ - added time 
 
  command_mapping = {
     "VolumeUp": volume_up,
@@ -33,7 +34,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-String version = "v1.8";
+String version = "v1.9";
 
 #define CLK 5        // CLK pin of the rotary encoder
 #define DATA 6       // DT pin of the rotary encoder
@@ -125,8 +126,6 @@ void setup() {
 
   Serial.begin(115200);
 
-
-  // Serial.println("KY-040 Start:");
 }
 
 
@@ -268,7 +267,7 @@ void loop() {
     counter++;
 
 
-    if (counter > 5) {
+    if (counter > 4) {
       counter = 1;
     }
 
@@ -337,7 +336,7 @@ void loop() {
         display.println("Color");
 
         display.display();
-        delay(300);  // Debounce delay
+       delay(300);;  // Debounce delay
 
         break;
 
