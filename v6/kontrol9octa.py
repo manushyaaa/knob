@@ -242,7 +242,7 @@ if __name__ == "__main__":
      
         try:     
             while True:
-                command = ser.readline().strip().decode('utf-8')
+                command = ser.readline().strip().decode('utf-8' )
                 print("Received command:", command)
                 action = command_mapping.get(command)
 
@@ -252,9 +252,7 @@ if __name__ == "__main__":
                     
                 else:
                     print("Unknown command:", command)
-                data_per = MAIN_COUNTER
-                ser.write((str(data_per)).encode())
-
+               
         except serial.SerialException as e:
             print("Serial communication error:", e)
          

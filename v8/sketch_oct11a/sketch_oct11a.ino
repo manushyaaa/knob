@@ -33,7 +33,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-String version = "v1.6";
+String version = "v1.8";
 
 #define CLK 5        // CLK pin of the rotary encoder
 #define DATA 6       // DT pin of the rotary encoder
