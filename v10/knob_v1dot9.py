@@ -237,17 +237,17 @@ def play_pause():
     except Exception as e:
         print("Spotify API error:", e)
 
-def previous_track():
-    try:
-        sp.previous_track()
-    except Exception as e:
-        print("Spotify API error:", e)
+# def previous_track():
+#     try:
+#         sp.previous_track()
+#     except Exception as e:
+#         print("Spotify API error:", e)
 
-def next_track():
-    try:
-        sp.next_track()
-    except Exception as e:
-        print("Spotify API error:", e)
+# def next_track():
+#     try:
+#         sp.next_track()
+#     except Exception as e:
+#         print("Spotify API error:", e)
  
 command_mapping = {
     "VolumeUp": volume_up,
@@ -268,8 +268,8 @@ command_mapping = {
     "ChangeMode": change_mode,
     "ChangeModeR": change_color,
     "Power": power,
-    "Previous": previous_track,
-    "Next": next_track
+    # "Previous": previous_track,
+    # "Next": next_track
 }
 
 if __name__ == "__main__": 
@@ -294,6 +294,10 @@ if __name__ == "__main__":
                     now = datetime.now()
                     current_time = now.strftime("%H:%M:%S")
                     ser.write((str(current_time)+'\n').encode())
+
+                elif command == "GetDate":
+                
+                elif command == "GetBrightness":
                 else:                    
                     print("Unknown command:", command)
                 print( datetime.now().strftime("%H:%M:%S"),"Received command:", command)

@@ -1,0 +1,7 @@
+{
+    "configuration": "cpu=atmega328",
+    "board": "arduino:avr:nano",
+    "sketch": "v10\\Arduino\\knob_v1dot9.ino",
+    "programmer": "arduinoasispatmega32u4",
+    "port": "COM14"
+}
