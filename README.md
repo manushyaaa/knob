@@ -29,7 +29,7 @@
 - Mode Switch Button: Pin 2
 - Left Button: Pin 3
 - Right Button: Pin 4
-- 
+  
 ![Knob Circuit](https://github.com/manushyaaa/knob/blob/main/knob_circuit.png)
 
 ## Requirements
